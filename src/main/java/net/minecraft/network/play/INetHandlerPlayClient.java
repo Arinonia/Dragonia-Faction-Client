@@ -1,5 +1,6 @@
 package net.minecraft.network.play;
 
+import fr.arinonia.network.PacketPlayerJobs;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.server.S00PacketKeepAlive;
 import net.minecraft.network.play.server.S01PacketJoinGame;
@@ -357,5 +358,7 @@ public interface INetHandlerPlayClient extends INetHandler
     void handleEntityEffect(S1DPacketEntityEffect p_147260_1_);
 
     void handleOpenLobby();
+
+    void handlePlayerJobs(PacketPlayerJobs packetPlayerJobs);
 
 }

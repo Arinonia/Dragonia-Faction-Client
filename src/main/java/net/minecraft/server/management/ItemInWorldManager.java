@@ -1,5 +1,7 @@
 package net.minecraft.server.management;
 
+import fr.arinonia.jobs.EnumJobs;
+import fr.arinonia.jobs.JobHelper;
 import fr.arinonia.jobs.JobsPlayer;
 import fr.arinonia.jobs.JobsRegister;
 import net.minecraft.block.Block;
@@ -299,13 +301,9 @@ public class ItemInWorldManager
     }
 
     private void addXpForMiner(final int amount, final int modifier) {
-        final JobsPlayer miner = this.thisPlayerMP.getJob(JobsRegister.MINER);
-        addXpForJob(miner, amount, modifier);
+        JobHelper.addXpToJobs(thisPlayerMP, EnumJobs.MINER, amount);
     }
     private void addXpForJob(final JobsPlayer jobsPlayer, final int amount, final int modifier) {
-        jobsPlayer.addXp(amount * modifier);
-        System.out.println(jobsPlayer.getXp() + "/" + jobsPlayer.getXpToUP() + " level " + jobsPlayer.getLevel() + "/"
-                + jobsPlayer.getMaxLevel() + " métier : " + jobsPlayer.getJob().getName() + " gain d'xp : " + amount * modifier);
 
     }
     /**

@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import fr.arinonia.network.CSSwitchServer;
+import fr.arinonia.network.PacketPlayerJobs;
 import fr.arinonia.network.SCLobby;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -185,6 +186,7 @@ public enum EnumConnectionState
             this.func_150756_b(64, S40PacketDisconnect.class);
 
             this.func_150756_b(65, SCLobby.class);
+            this.func_150756_b(70, PacketPlayerJobs.class);
 
 
             this.func_150751_a(0, C00PacketKeepAlive.class);

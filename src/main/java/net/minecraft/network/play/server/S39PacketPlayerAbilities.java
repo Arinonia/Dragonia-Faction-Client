@@ -1,11 +1,6 @@
 package net.minecraft.network.play.server;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.arinonia.jobs.Jobs;
-import fr.arinonia.jobs.JobsPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
@@ -20,20 +15,18 @@ public class S39PacketPlayerAbilities extends Packet
     private boolean field_149115_d;
     private float field_149116_e;
     private float field_149114_f;
-
-    private List<JobsPlayer> jobs;
+    private static final String __OBFID = "CL_00001317";
 
     public S39PacketPlayerAbilities() {}
 
-    public S39PacketPlayerAbilities(PlayerCapabilities cap)
+    public S39PacketPlayerAbilities(PlayerCapabilities p_i45208_1_)
     {
-        this.func_149108_a(cap.disableDamage);
-        this.func_149102_b(cap.isFlying);
-        this.func_149109_c(cap.allowFlying);
-        this.func_149111_d(cap.isCreativeMode);
-        this.func_149104_a(cap.getFlySpeed());
-        this.func_149110_b(cap.getWalkSpeed());
-        this.setJobs(cap.getJobs());
+        this.func_149108_a(p_i45208_1_.disableDamage);
+        this.func_149102_b(p_i45208_1_.isFlying);
+        this.func_149109_c(p_i45208_1_.allowFlying);
+        this.func_149111_d(p_i45208_1_.isCreativeMode);
+        this.func_149104_a(p_i45208_1_.getFlySpeed());
+        this.func_149110_b(p_i45208_1_.getWalkSpeed());
     }
 
     /**
@@ -48,16 +41,6 @@ public class S39PacketPlayerAbilities extends Packet
         this.func_149111_d((var2 & 8) > 0);
         this.func_149104_a(p_148837_1_.readFloat());
         this.func_149110_b(p_148837_1_.readFloat());
-        int b = p_148837_1_.readInt();
-
-        this.jobs = new ArrayList<JobsPlayer>();
-        for (int o = 0; o < b; o++) {
-            int id = p_148837_1_.readInt();
-            int levelJob = p_148837_1_.readInt();
-            long xpJob = p_148837_1_.readLong();
-            final JobsPlayer jPlayer = new JobsPlayer(Jobs.getJobsById(id), levelJob, xpJob);
-            this.jobs.add(jPlayer);
-        }
     }
 
     /**
@@ -90,13 +73,6 @@ public class S39PacketPlayerAbilities extends Packet
         p_148840_1_.writeByte(var2);
         p_148840_1_.writeFloat(this.field_149116_e);
         p_148840_1_.writeFloat(this.field_149114_f);
-
-        for (final JobsPlayer j : this.jobs) {
-            int idJobs = Jobs.getIdFromJobs(j.getJob());
-            p_148840_1_.writeInt(idJobs);
-            p_148840_1_.writeInt(j.getLevel());
-            p_148840_1_.writeLong(j.getXp());
-        }
     }
 
     public void processPacket(INetHandlerPlayClient p_148833_1_)
@@ -109,7 +85,7 @@ public class S39PacketPlayerAbilities extends Packet
      */
     public String serialize()
     {
-        return String.format("invuln=%b, flying=%b, canfly=%b, instabuild=%b, flyspeed=%.4f, walkspped=%.4f", new Object[] { Boolean.valueOf(this.func_149112_c()), Boolean.valueOf(this.func_149106_d()), Boolean.valueOf(this.func_149105_e()), Boolean.valueOf(this.func_149103_f()), Float.valueOf(this.func_149101_g()), Float.valueOf(this.func_149107_h()) });
+        return String.format("invuln=%b, flying=%b, canfly=%b, instabuild=%b, flyspeed=%.4f, walkspped=%.4f", new Object[] {Boolean.valueOf(this.func_149112_c()), Boolean.valueOf(this.func_149106_d()), Boolean.valueOf(this.func_149105_e()), Boolean.valueOf(this.func_149103_f()), Float.valueOf(this.func_149101_g()), Float.valueOf(this.func_149107_h())});
     }
 
     public boolean func_149112_c()
@@ -175,13 +151,5 @@ public class S39PacketPlayerAbilities extends Packet
     public void processPacket(INetHandler p_148833_1_)
     {
         this.processPacket((INetHandlerPlayClient)p_148833_1_);
-    }
-
-    public List<JobsPlayer> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(List<JobsPlayer> jobs) {
-        this.jobs = jobs;
     }
 }

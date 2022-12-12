@@ -3,8 +3,8 @@ package net.minecraft.client.network;
 import com.google.common.base.Charsets;
 import com.mojang.authlib.GameProfile;
 import fr.arinonia.gui.GuiLobby;
-import fr.arinonia.jobs.JobsPlayer;
-import fr.arinonia.jobs.JobsRegister;
+import fr.arinonia.network.PacketPlayerJobs;
+import fr.arinonia.player.PlayerJobsSaver;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -1524,6 +1524,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         Minecraft.getMinecraft().displayGuiScreen(new GuiLobby());
     }
 
+
+    @Override
+    public void handlePlayerJobs(PacketPlayerJobs packetPlayerJobs) {
+        PlayerJobsSaver infos = Minecraft.getMinecraft().thePlayer.playerJobs;
+        infos.setJobs(packetPlayerJobs.getJobs());
+    }
+
     public void handleRemoveEntityEffect(S1EPacketRemoveEntityEffect p_147262_1_)
     {
         Entity var2 = this.clientWorldController.getEntityByID(p_147262_1_.func_149076_c());
@@ -1581,15 +1588,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         var2.capabilities.allowFlying = packet.func_149105_e();
         var2.capabilities.setFlySpeed(packet.func_149101_g());
         var2.capabilities.setPlayerWalkSpeed(packet.func_149107_h());
-
-        if (var2.capabilities.getJobs().isEmpty()) {
-            var2.capabilities.getJobs().add(new JobsPlayer(JobsRegister.FARMER));
-            var2.capabilities.getJobs().add(new JobsPlayer(JobsRegister.MINER));
-            var2.capabilities.getJobs().add(new JobsPlayer(JobsRegister.WOODCUTTER));
-            var2.capabilities.getJobs().add(new JobsPlayer(JobsRegister.FISHER));
-        }
-        var2.capabilities.setJobs(packet.getJobs());
-        System.out.println("packet is send " + packet.getJobs());
     }
 
     /**

@@ -10,6 +10,7 @@ import java.util.UUID;
 import fr.arinonia.jobs.Jobs;
 import fr.arinonia.jobs.JobsPlayer;
 import fr.arinonia.jobs.JobsRegister;
+import fr.arinonia.player.PlayerJobsSaver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -168,6 +169,9 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
      * An instance of a fishing rod's hook. If this isn't null, the icon image of the fishing rod is slightly different
      */
     public EntityFishHook fishEntity;
+
+    public PlayerJobsSaver playerJobs = new PlayerJobsSaver();
+
     private static final String __OBFID = "CL_00001711";
 
     public EntityPlayer(World p_i45324_1_, GameProfile p_i45324_2_)
@@ -587,14 +591,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
     //Dragonia JOBS
     public void onLivingUpdate()
     {
-        if (!this.worldObj.isClient) {
-            if (this.capabilities.getJobs().isEmpty()) {
-                this.capabilities.getJobs().add(new JobsPlayer(JobsRegister.FARMER));
-                this.capabilities.getJobs().add(new JobsPlayer(JobsRegister.MINER));
-                this.capabilities.getJobs().add(new JobsPlayer(JobsRegister.WOODCUTTER));
-                this.capabilities.getJobs().add(new JobsPlayer(JobsRegister.FISHER));
-            }
-        }
         if (this.flyToggleTimer > 0)
         {
             --this.flyToggleTimer;
@@ -943,6 +939,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
         }
 
         this.foodStats.readNBT(p_70037_1_);
+        this.playerJobs.readCapabilitiesFromNBT(p_70037_1_);
+
         this.capabilities.readCapabilitiesFromNBT(p_70037_1_);
 
         if (p_70037_1_.func_150297_b("EnderItems", 9))
@@ -977,6 +975,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 
         this.foodStats.writeNBT(p_70014_1_);
         this.capabilities.writeCapabilitiesToNBT(p_70014_1_);
+        this.playerJobs.writeCapabilitiesToNBT(p_70014_1_);
+
         p_70014_1_.setTag("EnderItems", this.theInventoryEnderChest.saveInventoryToNBT());
     }
 
@@ -2170,6 +2170,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
         }
 
         this.theInventoryEnderChest = p_71049_1_.theInventoryEnderChest;
+        this.playerJobs = p_71049_1_.playerJobs;
+
     }
 
     /**
@@ -2313,9 +2315,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
         return var1;
     }
 
-    public JobsPlayer getJob(final Jobs job) {
-        return this.capabilities.getJobs().stream().filter(k -> job == k.getJob()).findFirst().get();
-    }
 
     public static enum EnumChatVisibility
     {
