@@ -13,3 +13,5 @@ repositories {
 dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
 }
+
+compileJava.options.encoding("utf8")

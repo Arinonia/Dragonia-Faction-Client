@@ -1,7 +1,6 @@
 package fr.arinonia;
 
 import fr.arinonia.discord.DiscordUtil;
-import fr.arinonia.jobs.JobsRegister;
 import fr.arinonia.utils.Colors;
 
 public class Dragonia {

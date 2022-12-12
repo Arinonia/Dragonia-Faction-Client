@@ -14,9 +14,9 @@ public class PlayerJobsSaver {
 	public PlayerJobsSaver() {
 	}
 	
-	public void writeCapabilitiesToNBT(NBTTagCompound nbt) {
-		NBTTagList jobList = new NBTTagList();
-		for (JobsPlayer job : jobs) {
+	public void writeCapabilitiesToNBT(final NBTTagCompound nbt) {
+		final NBTTagList jobList = new NBTTagList();
+		for (final JobsPlayer job : jobs) {
 			if (job.jobs != null) {
 				jobList.appendTag(job.writeNbt());
 			}
@@ -24,10 +24,10 @@ public class PlayerJobsSaver {
 		nbt.setTag("jobs", jobList);
 	}
 
-	public void readCapabilitiesFromNBT(NBTTagCompound nbt) {
-		NBTTagList jobList = nbt.getTagList("jobs", 10);
+	public void readCapabilitiesFromNBT(final NBTTagCompound nbt) {
+		final NBTTagList jobList = nbt.getTagList("jobs", 10);
 		for (int i = 0; i < jobList.tagCount(); i++) {
-			JobsPlayer job = new JobsPlayer();
+			final JobsPlayer job = new JobsPlayer();
 			job.readNbt(jobList.getCompoundTagAt(i));
 			this.jobs.add(job);
 		}
@@ -38,7 +38,7 @@ public class PlayerJobsSaver {
 		return jobs;
 	}
 
-	public void setJobs(List<JobsPlayer> jobs) {
+	public void setJobs(final List<JobsPlayer> jobs) {
 		this.jobs = jobs;
 	}
 	
